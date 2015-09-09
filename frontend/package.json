@@ -1,0 +1,26 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "jquery": "^2.1.4",
+    "page": "^1.6.3",
+    "react": "^0.13.3"
+  },
+  "devDependencies": {
+    "director": "^1.2.8",
+    "gulp": "^3.9.0",
+    "gulp-livereload": "^3.8.0",
+    "gulp-react": "^3.0.1",
+    "react": "^0.13.3"
+  }
+}
