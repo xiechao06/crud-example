@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 var shell = require('shelljs');
 var fs = require('fs');
 var q = require('q');
@@ -16,6 +17,8 @@ q.fcall(initDB).then(function (images) {
         return {
             name: chance.name(),
             gender: chance.gender(),
+            extra: chance.paragraph(),
+            description: chance.paragraph(),
         };
     });
     return knex.insert(studentsRows).into('TB_STUDENT');
@@ -29,7 +32,7 @@ q.fcall(initDB).then(function (images) {
             var url = 'http://placehold.it/640x640/' + chance.color({ format: 'hex' }).substr(1) + '/' + chance.color({ format: 'hex' }).substr('1')  + '.jpg';
             shell.exec('wget ' + url + ' -O ./static/images/' + chance.word() + '.jpg');
         });
-    } 
+    }
     throw error;
 }).then(function () {
     return q.all([q.nfcall(glob, './static/images/*.jpg', {}), knex.select().from('TB_STUDENT')]);
@@ -43,7 +46,7 @@ q.fcall(initDB).then(function (images) {
             path: '/static/images/' + path.basename(image),
             created_at: new Date(),
             student_id: student.id,
-        }; 
+        };
     });
     return knex.insert(records).into('TB_IMAGE');
 }).catch(function (err) {

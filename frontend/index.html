@@ -12,6 +12,7 @@
 
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="bower_components/semantic-ui/dist/semantic.min.css">
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
   </head>
   <body>
@@ -19,13 +20,55 @@
     <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <div id="content"></div>
+    <div class="ui container" id="content">
+
+    </div>
     <!-- Add your site or application content here -->
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="node_modules/director/build/director.min.js"></script>
     <script src="node_modules/react/dist/react.min.js"></script>
+    <script src="node_modules/backbone/node_modules/underscore/underscore-min.js"></script>
+    <script src="node_modules/backbone/backbone-min.js"></script>
+    <script src="bower_components/semantic-ui/dist/semantic.min.js"></script>
+    <script src="bower_components/ractive/ractive.min.js"></script>
+    <script src="bower_components/backbone.paginator/lib/backbone.paginator.min.js"></script>
     <script src="js/plugins.js"></script>
+    <script src="js/loading-view.js"></script>
+    <script src="js/list.js"></script>
+    <script src="js/student.js"></script>
     <script src="js/main.js"></script>
 
+    <script id="list" type="x/template">
+
+        <div class="ui items">
+
+            <% students.forEach(function (student) { %>
+            <div class="item">
+                <div class="image">
+                    <img src="<%= student.image.path %>">
+                </div>
+                <div class="content">
+                    <a class="header"><%= student.name %></a>
+                    <div class="meta">
+                        <span>Description</span>
+                    </div>
+                    <div class="description">
+                        <p><%= student.description %></p>
+                    </div>
+                    <div class="extra">
+                        <%= student.extra %>
+                    </div>
+                </div>
+            </div>
+            <% }) %>
+
+        </div>
+
+    </script>
+
+    <script class="loader" type="x-template">
+        <div class="ui active inverted dimmer">
+            <div class="ui text loader">loading</div>
+        </div>
+    </script>
   </body>
 </html>

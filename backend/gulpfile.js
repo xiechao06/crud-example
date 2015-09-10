@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var nodemon = require('gulp-nodemon');
+var argv = require('yargs').argv;
 
 gulp.task('serve-dev', function() {
     var options = {
@@ -9,7 +10,7 @@ gulp.task('serve-dev', function() {
         },
         delayTime: 1,
         env: {
-            'PORT': 8080,
+            'PORT': parseInt(argv.p) || 8080,
             'NODE_ENV': 'dev'
         },
         watch: ['./']

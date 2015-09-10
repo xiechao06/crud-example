@@ -18,6 +18,8 @@ var initDB = function () {
         return knex.schema.createTable('TB_STUDENT', function (table) {
             table.increments();
             table.string('name');
+            table.string('description');
+            table.string('extra');
             table.enu('gender', ['Male', 'Female']);
         });
     });

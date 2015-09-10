@@ -12,6 +12,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "ampersand-router": "^3.0.2",
+    "backbone": "^1.2.3",
     "jquery": "^2.1.4",
     "page": "^1.6.3",
     "react": "^0.13.3"

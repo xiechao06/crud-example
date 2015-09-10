@@ -28,5 +28,6 @@ node_modules
 /backend/db
 /backend/static/images/
 /frontend/.Session.vim
+bower_components
 
 *.sw[p|o]
