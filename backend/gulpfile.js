@@ -6,7 +6,7 @@ gulp.task('serve-dev', function() {
     var options = {
         script: './koa-app.js',
         execMap: {
-            "js": "node --harmony"
+            "js": "node"
         },
         delayTime: 1,
         env: {

@@ -13,7 +13,7 @@ var initDB = require('./init-db.js');
 
 q.fcall(initDB).then(function (images) {
     console.log('create students');
-    var studentsRows = _(32).times(function (n) {
+    var studentsRows = _(1024).times(function (n) {
         return {
             name: chance.name(),
             gender: chance.gender(),
@@ -21,7 +21,10 @@ q.fcall(initDB).then(function (images) {
             description: chance.paragraph(),
         };
     });
-    return knex.insert(studentsRows).into('TB_STUDENT');
+    // we don't insert in one operation due to sqlite limitation
+    return q.all(studentsRows.map(function (student) {
+        return knex.insert(student).into('TB_STUDENT');
+    }));
 }).then(function () {
     return q.nfcall(fs.stat, './static/images');
 }).catch(function (error) {
@@ -39,16 +42,20 @@ q.fcall(initDB).then(function (images) {
 }).then(function (args) {
     var images = args[0];
     var students = args[1];
-    var records = _.zip(images, students).map(function (pair) {
-        var image = pair[0];
-        var student = pair[1];
+    var records = students.map(function (student) {
+        var image = _.sample(images);
         return {
             path: '/static/images/' + path.basename(image),
             created_at: new Date(),
             student_id: student.id,
         };
     });
-    return knex.insert(records).into('TB_IMAGE');
+    // we don't insert in one operation due to sqlite limitation
+    return q.all(
+        records.map(function (record) {
+            return knex.insert(record).into('TB_IMAGE');
+        })
+    );
 }).catch(function (err) {
     console.log(err.stack);
 }).done(function () {

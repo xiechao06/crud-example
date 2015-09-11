@@ -31,44 +31,74 @@
     <script src="bower_components/semantic-ui/dist/semantic.min.js"></script>
     <script src="bower_components/ractive/ractive.min.js"></script>
     <script src="bower_components/backbone.paginator/lib/backbone.paginator.min.js"></script>
+    <script src="bower_components/js-url/url.min.js"></script>
     <script src="js/plugins.js"></script>
     <script src="js/loading-view.js"></script>
     <script src="js/list.js"></script>
     <script src="js/student.js"></script>
+    <script src="js/pagination.js"></script>
+    <script src="js/paginator.js"></script>
     <script src="js/main.js"></script>
 
-    <script id="list" type="x/template">
 
-        <div class="ui items">
+    <script id="list" type="text/x-template">
 
-            <% students.forEach(function (student) { %>
-            <div class="item">
-                <div class="image">
-                    <img src="<%= student.image.path %>">
-                </div>
-                <div class="content">
-                    <a class="header"><%= student.name %></a>
-                    <div class="meta">
-                        <span>Description</span>
-                    </div>
-                    <div class="description">
-                        <p><%= student.description %></p>
-                    </div>
-                    <div class="extra">
-                        <%= student.extra %>
-                    </div>
-                </div>
-            </div>
-            <% }) %>
-
-        </div>
+      <div class="ui items">
+        <% students.forEach(function (student) { %>
+          <div class="item">
+              <div class="image">
+                  <img src="<%= 'http://127.0.0.1:8081/' + student.image.path %>">
+              </div>
+              <div class="content">
+                  <a class="header"><%= student.name %></a>
+                  <div class="meta">
+                      <span>Description</span>
+                  </div>
+                  <div class="description">
+                      <p><%= student.description %></p>
+                  </div>
+                  <div class="extra">
+                      <%= student.extra %>
+                  </div>
+              </div>
+          </div>
+        <% }) %>
+      </div>
 
     </script>
 
-    <script class="loader" type="x-template">
-        <div class="ui active inverted dimmer">
-            <div class="ui text loader">loading</div>
+    <script class="loader" type="text/x-template">
+      <div class="ui active inverted dimmer">
+          <div class="ui text loader">loading</div>
+      </div>
+    </script>
+
+    <script class="pagination" type="text/x-template">
+      <div class="ui basic center aligned segment">
+        <div class="ui centered pagination menu">
+          <a class="<%= pagination.hasPrev()? '': 'disabled' %> icon item"
+            href="<%= pagination.urlFor(pagination.currentPage - 1) %>" >
+            <i class="left arrow icon"></i>
+          </a>
+          <% pagination.iterPage(function (page) { %>
+             <% if (page != null) { %>
+               <% if (page != pagination.currentPage) { %>
+                 <a class="item" href="<%= pagination.urlFor(page) %>"><%= page %></a>
+               <% } else { %>
+                 <a class='active item'>
+                   <%= page %>
+                 </a>
+               <% } %>
+             <% } else { %>
+               <div class='disable item'>…</div>
+             <% } %>
+          <% }) %>
+          <a href="<%= pagination.urlFor(pagination.currentPage + 1) %>" aria-label="Next"
+            class="<%= pagination.hasNext()? '': 'disabled' %> icon item">
+            <i class="right arrow icon"></i>
+          </a>
         </div>
+      </div>
     </script>
   </body>
 </html>
