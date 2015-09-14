@@ -1,66 +1,40 @@
 
-var Students = Backbone.Collection.extend({
-    model: Student,
-    url:  function () {
-        return 'http://127.0.0.1:8081/student/list.json?' + _.pairs(this.state).map(function (pair) {
-            return {
-                perPage: 'per_page',
-                currentPage: 'page'
-            }[pair[0]] + '=' + pair[1];
-        }).join('&');
-    },
-    parse: function (response, options) {
-        this.state.totalRecords = response.totalCount;
-        return response.data;
-    },
-    fetch: function (options) {
-        this.state = _.extend({
-            perPage: 25,
-            currentPage: 1,
-        }, (options && options.state) || {});
-        Backbone.Collection.prototype.fetch.apply(this, arguments);
-    },
-});
+$(document).ready(function () {
+    var router = function (page, params) {
+        switch (page) {
+            case 'list': {
+                RiotControl.addStore(new Students({
+                    currentPage: params.page || 1,
+                    perPage: 8,
+                }));
+                riot.mount('#content', 'listapp');
+                RiotControl.trigger('fetch');
+                break;
+            }
+            default: {
+                riot.route('list');
+                break;
+            }
 
-var students = new Students();
-var list = new List({
-    collection: students,
-});
-var paginator = new Paginator({
-    collection: students,
-});
+        }
+    };
+    riot.route.parser(function(path) {
+        path = path.split('?');
+        var param = {};
+        var page = path[0];
+        var qs = path[1];
+        var params = {};
 
-var AppRouter = Backbone.Router.extend({
-    execute: function(callback, args, name) {
-        args.push(function (qs) {
-            return qs? _.object(qs.split('&').map(function (param) {
-                return param.split('=');
-            })): {};
-        }(args.pop()));
-        callback.apply(this, args);
-    },
-    routes: {
-        '': function () {
-            this.navigate('list', {trigger: true});
-        },
-        'list': function (param) {
-            $('#content').append(paginator.render().$el);
-            $('#content').append(list.render().$el);
-            // retrieve data
-            students.fetch({
-                reset: true,
-                state: {
-                    currentPage: parseInt(param.page) || 1,
-                    perPage: 100,
-                },
+        if (qs) {
+            qs.split('&').forEach(function(v) {
+                var c = v.split('=');
+                params[c[0]] = c[1];
             });
         }
-    },
 
-});
+        return [page, params];
+    });
 
-
-$(document).ready(function () {
-    var app = new AppRouter();
-    Backbone.history.start();
+    riot.route(router);
+    riot.route.exec(router);
 });

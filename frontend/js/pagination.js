@@ -3,14 +3,14 @@
 function Pagination(options) {
     'use strict';
 
-    this.currentPage = options.currentPage;
-    this.perPage = options.perPage;
-    this.totalCount = options.totalCount;
+    this.currentPage = parseInt(options.currentPage);
+    this.perPage = parseInt(options.perPage);
+    this.totalCount = parseInt(options.totalCount);
 
-    this.leftEdge = options.leftEdge || null;
-    this.rightEdge = options.rightEdge || null;
-    this.leftCurrent = options.leftCurrent || null;
-    this.rightCurrent = options.rightCurrent || null;
+    this.leftEdge = parseInt(options.leftEdge) || null;
+    this.rightEdge = parseInt(options.rightEdge) || null;
+    this.leftCurrent = parseInt(options.leftCurrent) || null;
+    this.rightCurrent = parseInt(options.rightCurrent) || null;
 }
 
 Pagination.prototype.pageNo = function () {
@@ -28,14 +28,34 @@ Pagination.prototype.hasNext = function () {
 
 
 Pagination.prototype.iterPage = function (cb) {
+    var last = 0;
     for (var i = 1; i < this.pageNo() + 1; ++i) {
         if ((this.leftEdge === null || i < this.leftEdge) ||
-           (this.rightEdge === null || i > this.pageNo() > this.rightEdge) ||
+           (this.rightEdge === null || i > this.pageNo() - this.rightEdge) ||
            ((this.leftCurrent === null || i >= this.currentPage - this.leftCurrent) &&
            (this.rightCurrent === null || i < this.currentPage + this.rightCurrent))) {
-            cb(i);
-        } else {
-            cb(null);
+            if (last + 1 != i) {
+                cb(null);
+            } else {
+                cb(i);
+            }
+            last = i;
         }
     }
 };
+
+Pagination.prototype.toJSON = function () {
+
+    var pages = [];
+    this.iterPage(function (i) {
+        pages.push(i);
+    });
+    return {
+        currentPage: this.currentPage,
+        pageNo: this.pageNo(),
+        hasPrev: this.hasPrev(),
+        hasNext: this.hasNext(),
+        pages: pages,
+    };
+};
+

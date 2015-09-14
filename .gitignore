@@ -28,6 +28,7 @@ node_modules
 /backend/db
 /backend/static/images/
 /frontend/.Session.vim
+/frontend/js/tags/*.js
 bower_components
 
 *.sw[p|o]

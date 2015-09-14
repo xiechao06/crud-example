@@ -16,13 +16,16 @@
     "backbone": "^1.2.3",
     "jquery": "^2.1.4",
     "page": "^1.6.3",
-    "react": "^0.13.3"
+    "react": "^0.13.3",
+    "riot": "^2.2.4",
+    "riotcontrol": "0.0.1"
   },
   "devDependencies": {
     "director": "^1.2.8",
     "gulp": "^3.9.0",
     "gulp-livereload": "^3.8.0",
     "gulp-react": "^3.0.1",
+    "gulp-riot": "^0.3.0",
     "react": "^0.13.3"
   }
 }
