@@ -1,5 +1,5 @@
 <paginator>
-<div class="ui basic center aligned segment">
+<div class="ui basic center aligned segment" if={ pagination }>
   <div class="ui centered pagination menu">
     <a class="{ pagination.hasPrev? '': 'disabled' } icon item"
       href="{ pagination.urlFor(pagination.currentPage - 1) }" >
@@ -21,7 +21,7 @@
 
 <script>
   var self = this;
-  RiotControl.on('fetched', function (students) {
+  RiotControl.student.on('list.fetched', function (students) {
     self.pagination = new Pagination({
       currentPage: students.state.currentPage,
       totalCount: students.state.totalCount,

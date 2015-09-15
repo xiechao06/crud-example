@@ -13,7 +13,7 @@ var initDB = require('./init-db.js');
 
 q.fcall(initDB).then(function (images) {
     console.log('create students');
-    var studentsRows = _(1024).times(function (n) {
+    var studentsRows = _(256).times(function (n) {
         return {
             name: chance.name(),
             gender: chance.gender(),
@@ -43,13 +43,18 @@ q.fcall(initDB).then(function (images) {
     var images = args[0];
     var students = args[1];
     var records = students.map(function (student) {
-        var image = _.sample(images);
-        return {
-            path: '/static/images/' + path.basename(image),
-            created_at: new Date(),
-            student_id: student.id,
-        };
-    });
+        var images_ = _.sample(images, 3);
+        return images_.map(function (image) {
+            return {
+                path: '/static/images/' + path.basename(image),
+                created_at: new Date(),
+                student_id: student.id,
+            };
+        });
+    }).reduce(function (acc, a) {
+        return acc.concat(a);
+    }, []);
+    console.log(records);
     // we don't insert in one operation due to sqlite limitation
     return q.all(
         records.map(function (record) {
