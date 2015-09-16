@@ -33,11 +33,11 @@
 </div>
 <script>
   var self = this;
-  RiotControl.student.on('object.loading', function (student) {
+  this.on('object.loading', function (student) {
     self.loading = true;
     self.update();
   });
-  RiotControl.student.on('object.fetched', function (student) {
+  this.on('object.fetched', function (student) {
     self.loading = false;
     self.student = student.data;
     self.update();
@@ -91,5 +91,10 @@
       self.update();
     })
   }
+  this.on('mount', function () {
+    riotBus.register(self);
+  }).on('unmount', function () {
+    riotBus.unregister(self);
+  });
 </script>
 </objectapp>

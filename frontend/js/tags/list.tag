@@ -21,15 +21,18 @@
 </div>
 <script>
   var self = this;
-  this.students = [];
-  RiotControl.student.on('list.loading', function () {
+  self.students = [];
+  self.on('list.loading', function () {
     self.loading = true;
     self.update();
-  });
-  RiotControl.student.on('list.fetched', function (students) {
+  }).on('list.fetched', function (students) {
       self.loading = false;
       self.students = students.data.data;
       self.update();
+  }).on('mount', function () {
+    riotBus.register(self);
+  }).on('unmount', function () {
+    riotBus.unregister(self);
   });
 </script>
 </list>

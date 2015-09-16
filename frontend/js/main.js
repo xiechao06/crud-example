@@ -1,8 +1,8 @@
 var students = new Students({
     perPage: 8,
 });
-RiotControl.addStore(students, 'student');
-RiotControl.addStore(new Student(), 'student');
+riotBus.register(students);
+riotBus.register(new Student());
 
 var listapp;
 var objectapp;
@@ -13,14 +13,14 @@ $(document).ready(function () {
                 listapp = listapp || riot.mount('#content', 'listapp');
                 objectapp = null;
                 var params = arguments[1];
-                RiotControl.student.trigger('list.fetch', parseInt(params.page) || 1);
+                riotBus.trigger('list.fetch', parseInt(params.page) || 1);
                 break;
             }
             case 'object': {
                 listapp = null;
                 objectapp = objectapp || riot.mount('#content', 'objectapp');
                 var id = parseInt(arguments[1]) || null;
-                id && RiotControl.student.trigger('object.fetch', id);
+                id && riotBus.trigger('object.fetch', id);
                 break;
             }
             default: {
@@ -45,7 +45,6 @@ $(document).ready(function () {
         }
 
         page.push(params);
-        console.log(page);
         return page;
     });
 

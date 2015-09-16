@@ -21,7 +21,8 @@
 
 <script>
   var self = this;
-  RiotControl.student.on('list.fetched', function (students) {
+
+  this.on('list.fetched', function (students) {
     self.pagination = new Pagination({
       currentPage: students.state.currentPage,
       totalCount: students.state.totalCount,
@@ -39,6 +40,10 @@
       }).join('&');
     };
     self.update();
+  }).on('mount', function () {
+    riotBus.register(self);
+  }).on('unmount', function () {
+    riotBus.unregister(self);
   });
 </script>
 </paginator>
